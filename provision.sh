@@ -1,9 +1,27 @@
 #!/bin/bash
 echo '|========== Updating ==========|'
+sudo add-apt-repository ppa:webupd8team/atom
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install software-properties-common
 sudo apt-get install python-software-properties
-
+sudo apt-get install curl
+#VSCode
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+#Chrome
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+#PHP
+sudo add-apt-repository ppa:ondrej/php
+#Gimp
+sudo add-apt-repository ppa:otto-kesselgulasch/gimp
+#Spotify
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
+echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
+#Sublime Text
+sudo add-apt-repository -y ppa:webupd8team/sublime-text-3
+sudo apt-get update
 echo '|========== Installing Git ==========|'
 sudo apt-get install -y git
 echo '|========== Installing Sublime ==========|'
@@ -18,12 +36,12 @@ git clone https://github.com/creationix/nvm.git ~/.nvm
 cd ~/.nvm
 git checkout `git describe --abbrev=0 --tags`
 # set variables
-export NVM_DIR="/home/dave/.nvm"
+export NVM_DIR="~/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 # update .bashrc
 cat << 'END' >> ~/.bashrc
 # nvm settings:
-export NVM_DIR="/home/dave/.nvm"
+export NVM_DIR="~/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 END
 # install node/npm
@@ -36,38 +54,20 @@ npm install -g nodemon
 echo '|========== Installing Angular CLI ==========|'
 npm install -g @angular/cli
 echo '|========== Installing VS Code ==========|'
-curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-sudo apt-get update
-sudo apt-get install code
+sudo apt-get install -y code
 echo '|========== Installing Chrome ==========|'
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-sudo apt-get update
-sudo apt-get install google-chrome-stable
+sudo apt-get install -y google-chrome-stable
 echo '|========== Installing PHP7 ==========|'
-sudo add-apt-repository ppa:ondrej/php
-sudo apt-get update
 sudo apt-get install -y php7.1
 echo '|========== Installing Composer ==========|'
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php -r "if (hash_file('SHA384', 'composer-setup.php') === '669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-php composer-setup.php
-php -r "unlink('composer-setup.php');"
+curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 echo '|========== Moving Composer to bin ==========|'
-sudo mv composer.phar /usr/local/bin/composer
 sudo chmod 755 /usr/local/bin/composer
 echo '|========== Installing Laravel Installer ==========|'
 composer global require "laravel/installer"
 echo '|========== Installing Spotify ==========|'
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
-echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
-sudo apt-get update
 sudo apt-get install spotify-client
 echo '|========== Installing Gimp ==========|'
-sudo add-apt-repository ppa:otto-kesselgulasch/gimp
-sudo apt-get update
 sudo apt-get install gimp
 echo '|========== Installing BleachBit ==========|'
 sudo apt-get install -y bleachbit
