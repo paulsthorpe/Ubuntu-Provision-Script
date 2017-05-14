@@ -22,6 +22,7 @@ echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sourc
 #Sublime Text
 sudo add-apt-repository -y ppa:webupd8team/sublime-text-3
 sudo apt-get update
+sudo apt-get install -y dkms
 echo '|========== Installing Git ==========|'
 sudo apt-get install -y git
 git config --global user.name "Paul Thorpe"
@@ -40,6 +41,7 @@ sudo apt-get install -y nodejs
 # fix node permissons
 mkdir ~/.npm-global
 npm config set prefix '~/.npm-global'
+sudo chown -R $(whoami) $(npm config get prefix)
 export PATH=~/.npm-global/bin:$PATH
 source ~/.profile
 # install npm packages
@@ -49,6 +51,8 @@ echo '|========== Installing Nodemon ==========|'
 npm install -g nodemon
 echo '|========== Installing Angular CLI ==========|'
 npm install -g @angular/cli
+echo '|========== Installing Express Generator ==========|'
+npm install -g express-generator
 echo '|========== Installing VS Code ==========|'
 sudo apt-get install -y code
 echo '|========== Installing Chrome ==========|'
@@ -74,4 +78,5 @@ echo '|========== Installing Googler ==========|'
 sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v3.1/googler && sudo chmod +x /usr/local/bin/googler
 sudo googler -u
 echo '|========== Installing Unrar Free ==========|'
+sudo apt-get install -y zip gzip tar
 sudo apt-get install -y unrar-free
